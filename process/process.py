@@ -1,18 +1,12 @@
 import warc
 import gzip
 import re
-import os
-import shutil
+
 
 from bs4 import BeautifulSoup
 from string import digits
 
-path = 'output_htmls'
-pathDoc = 'document'
-if not os.path.exists(path):
-    os.makedirs(path)
-elif not os.path.exists(pathDoc):
-    os.makedirs(pathDoc)
+
 
 def preProcessing(content):
     with open(content) as f:
@@ -46,4 +40,3 @@ def preProcessing(content):
                             out.write(l+'\n')
                 index = index + 1
                 content = ""
-    shutil.rmtree(path)
