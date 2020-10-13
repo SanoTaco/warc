@@ -43,7 +43,6 @@ def preProcessing(content):
                 globalI=index
                 content = ""
     word_dict = {}
-    ###測試1個文件記錄
     with open("document/doc1",'r') as fp:
         for index,word in enumerate(fp):
             if word not in word_dict:
@@ -53,5 +52,7 @@ def preProcessing(content):
             else:
                 word_dict[word].append(index+1)
     word_dict = {x.replace('\n', ''): v for x, v in word_dict.items()} 
-    print word_dict.items()
+    for key,value in word_dict.items():
+        print('{key},{value}'.format(key = key, value = value)+","+str(len(value)))
+        #print(len(value))
  
