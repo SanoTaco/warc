@@ -2,6 +2,7 @@ import sys
 import os
 import shutil
 from process.process import preProcessing
+from indexing.indexing import indexing
 
 path = 'output_htmls'
 if not os.path.exists(path):
@@ -12,7 +13,8 @@ def main():
     print("Start ......")
     print("Parsing HTML ......")
     print("Printing ......")
-    preProcessing(input_file)
+    dictList=preProcessing(input_file)
+    indexing(dictList)
     print("Finish!!!")
     shutil.rmtree(path)
 

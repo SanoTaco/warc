@@ -1,14 +1,13 @@
 import warc
 import gzip
 import re
-import pprint
+
 
 from bs4 import BeautifulSoup
 from string import digits
 
-terms = {}
-test = []
 
+dictList = []
 
 def preProcessing(content):
     with open(content) as f:
@@ -38,21 +37,8 @@ def preProcessing(content):
                     [s for s in text.strip().splitlines(True) if s.strip("\r\n")])
                 text = text.lower().encode("utf-8")
                 text = text.split()
-                test.append(text)
+                dictList.append(text)
                 index = index + 1
                 content = ""
+    return dictList
 
-    doc_i = 0
-    for v in test:
-        for word in v:
-            if word not in terms:
-                terms[word] = {}
-            if str(doc_i) not in terms[word]:
-                terms[word][str(doc_i)] = 0
-            terms[word][str(doc_i)] = terms[word][str(doc_i)] + 1
-        doc_i = doc_i+1
-    pp = pprint.PrettyPrinter(indent=2)
-    pp.pprint(terms)
-    f = open("dict.txt", "w")
-    f.write(str(terms))
-    f.close()

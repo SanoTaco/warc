@@ -11,4 +11,4 @@
 
 
 ## Output dict file:
-`dict.txt`
+`output.dict`
