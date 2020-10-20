@@ -1,4 +1,4 @@
-# warc tools to getword
+# warc tools
 
 ## Usage
 `python2 main.py filename`
@@ -10,23 +10,5 @@
 
 
 
-## Document example:
-Template<br>
-Business<br>
-General<br>
-Sharp<br>
-Business<br>
-Template<br>
-Home<br>
-Services<br>
-Portfolio<br>
-Web<br>
-Design<br>
-Pricing<br>
-Dreamweaver<br>
-Templates<br>
-Web<br>
-Applications<br>
-Free<br>
-Tutorials<br>
-
+## Output dict file:
+`dict.txt`

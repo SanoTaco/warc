@@ -1,13 +1,15 @@
 import warc
 import gzip
 import re
-
+import pprint
 
 from bs4 import BeautifulSoup
 from string import digits
 
-globalI=0
-total_dict={}
+terms = {}
+test = []
+
+
 def preProcessing(content):
     with open(content) as f:
         is_file = False
@@ -34,25 +36,23 @@ def preProcessing(content):
                 text = ''.join(i for i in text if not i.isdigit())
                 text = ''.join(
                     [s for s in text.strip().splitlines(True) if s.strip("\r\n")])
-                text = text.lower()
-                with open("document/"+"doc"+str(index), "w") as out:
-                    for l in text:
-                        #if l != '\n':
-                        out.write(l)
+                text = text.lower().encode("utf-8")
+                text = text.split()
+                test.append(text)
                 index = index + 1
-                globalI=index
                 content = ""
-    word_dict = {}
-    with open("document/doc1",'r') as fp:
-        for index,word in enumerate(fp):
-            if word not in word_dict:
-                word = re.sub('\n+', '\n', word)
-                #print word
-                word_dict[word]=[index+1]
-            else:
-                word_dict[word].append(index+1)
-    word_dict = {x.replace('\n', ''): v for x, v in word_dict.items()} 
-    for key,value in word_dict.items():
-        print('{key},{value}'.format(key = key, value = value)+","+str(len(value)))
-        #print(len(value))
- 
+
+    doc_i = 0
+    for v in test:
+        for word in v:
+            if word not in terms:
+                terms[word] = {}
+            if str(doc_i) not in terms[word]:
+                terms[word][str(doc_i)] = 0
+            terms[word][str(doc_i)] = terms[word][str(doc_i)] + 1
+        doc_i = doc_i+1
+    pp = pprint.PrettyPrinter(indent=2)
+    pp.pprint(terms)
+    f = open("dict.txt", "w")
+    f.write(str(terms))
+    f.close()
