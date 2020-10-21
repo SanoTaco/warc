@@ -26,11 +26,11 @@ def indexing(dictList):
             for pos in terms[word][docid]:
                 amount[word] = amount[word]+len(terms[word][docid][pos])
 
-    for word in terms:
+    for word in sorted(terms):
         testOutput = word+","+str(amount[word])+":\n<"
-        for docid in terms[word]:
+        for docid in sorted(terms[word]):
             for pos in terms[word][docid]:
-                testOutput = testOutput+"doc"+str(int(docid))+","
+                testOutput = testOutput+"doc"+str(int(docid)+1)+","
                 testOutput = testOutput+str(len(terms[word][docid][pos]))+":<"+str(
                     terms[word][docid][pos]).replace("[", "").replace("]", "")+">;"
         testOutput = testOutput+">"
