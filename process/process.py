@@ -9,6 +9,7 @@ from string import digits
 
 dictList = []
 
+
 def preProcessing(content):
     with open(content) as f:
         is_file = False
@@ -36,9 +37,9 @@ def preProcessing(content):
                 text = ''.join(
                     [s for s in text.strip().splitlines(True) if s.strip("\r\n")])
                 text = text.lower().encode("utf-8")
-                text = text.split()
+                text = text.split("\n")
                 dictList.append(text)
                 index = index + 1
                 content = ""
+    # print dictList
     return dictList
-
