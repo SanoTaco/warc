@@ -12,10 +12,10 @@ def main():
     input_file = sys.argv[1]
     print("Start ......")
     print("Parsing HTML ......")
-    print("Printing ......")
+    print("Dumping ......")
     dictList=preProcessing(input_file)
     indexing(dictList)
-    print("Finish!!!")
+    print("Finish !!!")
     shutil.rmtree(path)
 
 if __name__ == "__main__":
