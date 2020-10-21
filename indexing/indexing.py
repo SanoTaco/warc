@@ -5,7 +5,10 @@ terms = {}
 amount = {}
 
 
+
+
 def indexing(dictList):
+    finalOutput = ""
     doc_i = 0
     for v in dictList:
         for word in v:
@@ -24,14 +27,23 @@ def indexing(dictList):
                 amount[word] = amount[word]+len(terms[word][docid][pos])
 
     for word in terms:
-        terms[word]["amount"] = amount[word]
+        testOutput = word+","+str(amount[word])+":\n<"
+        for docid in terms[word]:
+            for pos in terms[word][docid]:
+                testOutput = testOutput+"doc"+str(int(docid))+","
+                testOutput = testOutput+str(len(terms[word][docid][pos]))+":<"+str(
+                    terms[word][docid][pos]).replace("[", "").replace("]", "")+">;"
+        testOutput = testOutput+">"
+        finalOutput = finalOutput + testOutput+"\n"
+        #print testOutput
+        
 
-    json_object = json.dumps(terms, indent=4)
-    print(json_object)
+    #json_object = json.dumps(terms, indent=4)
+    # print(json_object)
     output = "\n".join("{}\t{}".format(k, v) for k, v in terms.items())
     output.replace("{", "<")
     output.replace("}", ">")
    # print output
     f = open("output.dict", "w")
-    f.write(output)
+    f.write(finalOutput)
     f.close()
