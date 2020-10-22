@@ -275,3 +275,50 @@ Make `term_table` to be json formatted and sorted, we will get:
     }
 }
 ```
+
+## Try to implement search function search in `test_for_query.py`(for HW2):
+
+Single keywords:
+
+```bash
+Searching for words:  ['brother'] 
+
+<doc#>           <similarity score>
+----------------------------------------
+doc1                    0.829279
+doc2                    0.
+doc3                    0.
+doc4                    0.69589197
+
+Searching for words:  ['boy', 'next', 'door'] 
+
+<doc#>           <similarity score>
+----------------------------------------
+doc1                    0.
+doc2                    0.
+doc3                    0.
+doc4                    0.
+```
+
+Free texts:
+
+```bash
+Searching for words:  ['big', 'brother', 'is', 'student'] 
+
+<doc#>           <similarity score>
+----------------------------------------
+doc1                    0.70692781
+doc2                    0.55060251
+doc3                    0.29801608
+doc4                    0.40177342
+
+Searching for words:  ['sb', 'student'] 
+
+<doc#>           <similarity score>
+----------------------------------------
+doc1                    0.
+doc2                    0.56381112
+doc3                    0.80124644
+doc4                    0.11163665
+```
+
