@@ -105,7 +105,7 @@ for docid in array[row, 1]:
 
 And the we can easily find the panacea（靈丹妙藥) in this test:
 
-Word: array[row, 0]<br/>
+Word: `array[row, 0]`<br/>
 Document ID: `array[row, 1].keys()`<br/>
 Document ID and positions: `array[row, 1]`<br/>
 Term frequency: `len(array[row, 1][docid])`<br/>
