@@ -87,19 +87,25 @@ The terminal will show:
 0
 ```
 
-We can easily understand that `array[row]` ->`[word{docID:[pos], ... , docIDN:[posN]}] ` and `array[row][value]`->`{docID:[pos],...,docIDN:[posN]}`, it means that that `array[row]`will show all pieces of information of the word in which row and `array[row][value]` will show where this word appears in which document and position.</br>
+We can easily understand that `array[row]` ->`[word{docID:[pos], ... , docIDN:[posN]}] ` and `array[row][1]`->`{docID:[pos],...,docIDN:[posN]}`, it means that that `array[row]`will show word in which row and `array[row][1]` will show where this word appears in which document and position.</br>
 
 If we want to get all the positions, we can use for loop function to get them.
 
 Example:
 
 ```Python
-for docid in array[row, column]:
+for docid in array[row, 1]:
     print docid # To get keys
     
-for docid in array[row, column]:
-    print array[row, column][docid] # To get values
+for docid in array[row, 1]:
+    print array[row, 1][docid] # To get values
 ```
 
 
 
+And the we can easily find the panacea（靈丹妙藥) in this test:
+
+Word: array[row, 0]<br/>
+Document ID: `array[row, 1].keys()`<br/>
+Document ID and positions: `array[row, 1]`<br/>
+Term frequency: `len(array[row, 1][docid])`<br/>

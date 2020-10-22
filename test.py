@@ -40,9 +40,14 @@ for word in terms:
 #dtype = dict(names = names, formats=formats)
 array = np.array(list(terms.items()))
 
-print array, "\n", array[1], "\n", array[1, 1]
-for v in array[1, 1]:
-    print array[1, 1][v]
+print array[3,0], "\n\t\n",array[3, 1].keys()
+
+lentest=0
+
+for v in array[3, 1]:
+    print array[3, 1][v]
+    lentest = lentest+len(array[3, 1][v])
+print lentest
 
 query = raw_input("Query: ")
 
