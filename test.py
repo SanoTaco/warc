@@ -54,17 +54,17 @@ dictTest = {}
 for s in range(np.shape(array)[0]):
     print array[s, 0]
     for v in array[s, 1]:
-        if v not in dictTest:
-            dictTest[v] = {}
+        if "doc"+str(int(v)+1) not in dictTest:
+            dictTest["doc"+str(int(v)+1)] = {}
         print "doc", int(v)+1, "\ttf:", len(array[s, 1][v])
         print "idf", np.log(doc_i/amount[array[s, 0]]+1)
         print "TF-IDF for doc", int(v)+1, ":", len(
             array[s, 1][v])*np.log(doc_i/amount[array[s, 0]]+1), "\n"
         tf_idf_data = len(array[s, 1][v])*np.log(doc_i/amount[array[s, 0]]+1)
-        dictTest[v][array[s, 0]] = tf_idf_data
+        dictTest["doc"+str(int(v)+1)][array[s, 0]] = tf_idf_data
 
-
-json_object = json.dumps(dictTest, indent=4)
+#dictTest=sorted(dictTest)
+json_object = json.dumps(dictTest, indent=4,sort_keys=True)
 print(json_object)
 # for docNumber in dictTest:
 #    for data in dictTest[docNumber]:
