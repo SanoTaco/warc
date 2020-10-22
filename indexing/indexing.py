@@ -14,24 +14,22 @@ def indexing(dictList):
                 terms[word] = {}
             if str(doc_i) not in terms[word]:
                 terms[word][str(doc_i)] = {}
-            terms[word][str(doc_i)]["pos"] = [
+            terms[word][str(doc_i)] = [
                 i for i, e in enumerate(v) if e == word]
         doc_i = doc_i+1
 
     for word in terms:
         amount[word] = 0
         for docid in terms[word]:
-            for pos in terms[word][docid]:
-                amount[word] = amount[word]+len(terms[word][docid][pos])
+            amount[word] = amount[word]+len(terms[word][docid])
 
     for word in sorted(terms):
-        testOutput = word+","+str(amount[word])+":\n<"
+        testOutput = word+","+str(amount[word])+":<"
         for docid in sorted(terms[word]):
-            for pos in terms[word][docid]:
-                testOutput = testOutput+"doc"+str(int(docid)+1)+","
-                testOutput = testOutput+str(len(terms[word][docid][pos]))+":<"+str(
-                    terms[word][docid][pos]).replace("[", "").replace("]", "")+">;"
-        testOutput = testOutput+">"
+            testOutput = testOutput+"doc"+str(int(docid)+1)+","
+            testOutput = testOutput+str(len(terms[word][docid]))+":<"+str(
+                terms[word][docid]).replace("[", "").replace("]", "")+">;"
+        testOutput = testOutput+">;"
         finalOutput = finalOutput + testOutput+"\n"
         # print testOutput
 

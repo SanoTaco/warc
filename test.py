@@ -19,7 +19,7 @@ for v in test:
             terms[word] = {}
         if str(doc_i) not in terms[word]:
             terms[word][str(doc_i)] = {}
-        terms[word][str(doc_i)]["pos"] = [
+        terms[word][str(doc_i)] = [
             i for i, e in enumerate(v) if e == word]
        # terms[word][str(doc_i)]["tf"]=terms[word][str(doc_i)]["tf"]+1
     doc_i = doc_i+1
@@ -27,23 +27,15 @@ for v in test:
 for word in terms:
     amount[word] = 0
     for docid in terms[word]:
-        for pos in terms[word][docid]:
-            amount[word] = amount[word]+len(terms[word][docid][pos])
+        amount[word] = amount[word]+len(terms[word][docid])
 
-for word in terms:
-    testOutput = word+","+str(amount[word])+":\n<"
-    for docid in terms[word]:
-        for pos in terms[word][docid]:
-            testOutput = testOutput+"doc"+str(int(docid))+","
-            testOutput = testOutput+str(len(terms[word][docid][pos]))+":<"+str(
-                terms[word][docid][pos]).replace("[", "").replace("]", "")+">;"
-    testOutput = testOutput+">"
-    print testOutput
+
+    #print testOutput
 
 
 #print(sorted(terms.items(), key=lambda obj: obj[0]))
 json_object = json.dumps(terms, indent=2)
-# print(json_object)
+print(json_object)
 output = "\n".join("{}\t{}".format(k, v) for k, v in terms.items())
 output.replace("{", "<")
 output.replace("}", ">")
