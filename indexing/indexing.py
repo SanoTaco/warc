@@ -21,7 +21,7 @@ def indexing(dictList):
     for word in terms:
         amount[word] = 0
         for docid in terms[word]:
-            amount[word] = amount[word]+len(terms[word][docid])
+            amount[word] = amount[word]+1
 
     for word in sorted(terms):
         testOutput = word+","+str(amount[word])+":<"

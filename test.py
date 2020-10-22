@@ -3,12 +3,14 @@ import numpy as np
 from collections import OrderedDict
 from collections import defaultdict
 from operator import itemgetter
+import math
 
 terms = {}
 test = [
     ["brother", "brother", "is", "my", "brother"],
-    ["brother", "is", "my", "sb", "student"],
-    ["brother", "sb", "sb", "sb", "student"]
+    ["s", "is", "my", "sb", "student"],
+    ["s", "sb", "sb", "sb", "student"],
+    ["brother", "who", "student", "sb", "gg"]
 ]
 
 total = {}
@@ -23,31 +25,50 @@ for v in test:
             terms[word] = {}
         if str(doc_i) not in terms[word]:
             terms[word][str(doc_i)] = {}
+            # terms[word]["tf"]=0
         terms[word][str(doc_i)] = [
             i for i, e in enumerate(v) if e == word]
-       # terms[word][str(doc_i)]["tf"]=terms[word][str(doc_i)]["tf"]+1
+        # terms[word]["tf"]=terms[word]["tf"]+1
         #print terms[word].keys(), terms.keys(), terms[word]
     doc_i = doc_i+1
+
 
 for word in terms:
     amount[word] = 0
     for docid in terms[word]:
-        amount[word] = amount[word]+len(terms[word][docid])
+        amount[word] = amount[word]+1
 
+print amount["brother"]
 
 #names = ['id','data']
 #formats = ['f8','f8']
 #dtype = dict(names = names, formats=formats)
 array = np.array(list(terms.items()))
 
-print array[3,0], "\n\t\n",array[3, 1].keys()
+print array
 
-lentest=0
+lentest = 0
 
-for v in array[3, 1]:
-    print array[3, 1][v]
-    lentest = lentest+len(array[3, 1][v])
-print lentest
+dictTest = {}
+
+for s in range(1, doc_i):
+    print array[s, 0]
+    for v in array[s, 1]:
+        if v not in dictTest:
+            dictTest[v] = {}
+        print "doc", int(v)+1, "\ttf:", len(array[s, 1][v])
+        print "idf", np.log(doc_i/amount[array[s, 0]]+1)
+        print "TF-IDF for doc", int(v)+1, ":", len(
+            array[s, 1][v])*np.log(doc_i/amount[array[s, 0]]+1), "\n"
+        tf_idf_data = len(array[s, 1][v])*np.log(doc_i/amount[array[s, 0]]+1)
+        dictTest[v][array[s, 0]] = tf_idf_data
+
+print dictTest
+json_object = json.dumps(dictTest, indent=4)
+print(json_object)
+for docNumber in dictTest:
+    for data in dictTest[docNumber]:
+        print docNumber, data, dictTest[docNumber][data]
 
 query = raw_input("Query: ")
 

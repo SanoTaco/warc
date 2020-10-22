@@ -109,3 +109,78 @@ Word: `array[row, 0]`<br/>
 Document ID: `array[row, 1].keys()`<br/>
 Document ID and positions: `array[row, 1]`<br/>
 Term frequency: `len(array[row, 1][docid])`<br/>
+
+tests for tf-idf:
+
+```python
+dictTest = {}
+
+for s in range(1, doc_i):
+    print array[s, 0]
+    for v in array[s, 1]:
+        if v not in dictTest:
+            dictTest[v] = {}
+        print "doc", int(v)+1, "\ttf:", len(array[s, 1][v])
+        print "idf", np.log(doc_i/amount[array[s, 0]]+1)
+        print "TF-IDF for doc", int(v)+1, ":", len(
+            array[s, 1][v])*np.log(doc_i/amount[array[s, 0]]+1), "\n"
+        tf_idf_data = len(array[s, 1][v])*np.log(doc_i/amount[array[s, 0]]+1)
+        dictTest[v][array[s, 0]] = tf_idf_data
+print dictTest
+```
+
+The terminal will show:
+
+```bash
+who
+doc 4   tf: 1
+idf 1.6094379124341003
+TF-IDF for doc 4 : 1.6094379124341003 
+
+brother
+doc 1   tf: 3
+idf 1.0986122886681098
+TF-IDF for doc 1 : 3.295836866004329 
+
+doc 4   tf: 1
+idf 1.0986122886681098
+TF-IDF for doc 4 : 1.0986122886681098 
+
+gg
+doc 4   tf: 1
+idf 1.6094379124341003
+TF-IDF for doc 4 : 1.6094379124341003
+
+{'0': {'brother': 3.295836866004329}, '3': {'gg': 1.6094379124341003, 'who': 1.6094379124341003, 'brother': 1.0986122886681098}}
+```
+
+Make `dictTest` json format, we will get:
+
+```json
+{
+    "0": {
+        "brother": 3.295836866004329
+    }, 
+    "3": {
+        "gg": 1.6094379124341003, 
+        "who": 1.6094379124341003, 
+        "brother": 1.0986122886681098
+    }
+}
+```
+
+It means:
+
+```json
+{
+    "doc1": {
+        "word1": tf-idf
+    }, 
+    "doc2": {
+        "word1": tf-idf, 
+        "word2": tf-idf, 
+        "word3": tf-idf
+    }
+}
+```
+
