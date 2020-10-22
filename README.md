@@ -12,6 +12,13 @@ Coz the warc package only supports Python 2.7 and is no longer maintained, you n
 ## Output dict file:
 `output.dict`
 
+## Panacea ~~「靈丹妙藥」這什麼鬼名字~~:
+Word: `terms.keys()`<br/>
+Document ID: `terms[word].keys()`<br/>
+Document ID and positions: `terms[word]`<br/>
+Term frequency: `len(terms[word][docid])`<br/>
+The document frequency is stored in dict `amount`.
+
 ## Structure:
 Dict Object: term{}
 ```json
