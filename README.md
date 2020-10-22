@@ -174,12 +174,12 @@ It means:
 ```json
 {
     "doc1": {
-        "word1": tf-idf
+        "word1": "tf-idf"
     }, 
     "doc2": {
-        "word1": tf-idf, 
-        "word2": tf-idf, 
-        "word3": tf-idf
+        "word1": "tf-idf", 
+        "word2": "tf-idf", 
+        "word3": "tf-idf"
     }
 }
 ```
