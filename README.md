@@ -112,7 +112,7 @@ Term frequency: `len(array[row, 1][docid])`<br/>
 
 tests for tf-idf:
 
-<img src="image-20201022235226100.png" alt="image-20201022235226100" style="zoom:50%;" />
+<img src="image-20201022235226100.png" alt="image-20201022235226100" style="zoom: 25%;" />
 
 ```python
 test = [
