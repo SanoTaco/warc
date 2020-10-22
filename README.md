@@ -207,7 +207,7 @@ idf 1.0986122886681098
 TF-IDF for doc 1 : 1.0986122886681098
 ```
 
-Make `dictTest` json be formatted and sorted, we will get:
+Make `dictTest` to be json formatted and sorted, we will get:
 
 ```python
 {
