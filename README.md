@@ -123,18 +123,39 @@ test = [
 ]
 
 dictTest = {}
+termsList=[]
 
 for s in range(np.shape(array)[0]):
     print array[s, 0]
+    termsList.append(array[s, 0])
     for v in array[s, 1]:
         if "doc"+str(int(v)+1) not in dictTest:
             dictTest["doc"+str(int(v)+1)] = {}
+            #idf[array[s, 0]]={}
+        #if array[s, 0] not in idf:
+            #idf[array[s, 0]]={}
         print "doc", int(v)+1, "\ttf:", len(array[s, 1][v])
         print "idf", np.log(doc_i/amount[array[s, 0]]+1)
+        #idf[array[s, 0]]=np.log(doc_i/amount[array[s, 0]]+1)
         print "TF-IDF for doc", int(v)+1, ":", (1+np.log(len(array[s, 1][v])))*np.log10(doc_i/amount[array[s, 0]]+1), "\n"
         tf_idf_data = (1+np.log(len(array[s, 1][v])))*np.log10(doc_i/amount[array[s, 0]]+1)
-        dictTest["doc"+str(int(v)+1)][array[s, 0]] = tf_idf_data
+        if tf_idf_data>0:
+            dictTest["doc"+str(int(v)+1)][array[s, 0]] = tf_idf_data
+        else:
+            dictTest["doc"+str(int(v)+1)][array[s, 0]] = 0
+
+
+for docid in dictTest:
+    terms_table[docid]={}
+    for x in termsList:
+        terms_table[docid][x]=0
+        if x in dictTest[docid].keys():
+            terms_table[docid][x]=dictTest[docid][x]
 ```
+
+`termsList` : all term words </br>
+
+`terms_table` : tf-idf
 
 The terminal will show:
 
@@ -208,31 +229,48 @@ idf 1.0986122886681098
 TF-IDF for doc 1 : 0.47712125471966244
 ```
 
-Make `dictTest` to be json formatted and sorted, we will get:
+Make `term_table` to be json formatted and sorted, we will get:
 
 ```python
 {
     "doc1": {
         "brother": 1.0012925283394312, 
+        "gg": 0, 
         "is": 0.47712125471966244, 
-        "my": 0.47712125471966244
+        "my": 0.47712125471966244, 
+        "s": 0, 
+        "sb": 0, 
+        "student": 0, 
+        "who": 0
     }, 
     "doc2": {
+        "brother": 0, 
+        "gg": 0, 
         "is": 0.47712125471966244, 
         "my": 0.47712125471966244, 
         "s": 0.47712125471966244, 
         "sb": 0.3010299956639812, 
-        "student": 0.47712125471966244
+        "student": 0.47712125471966244, 
+        "who": 0
     }, 
     "doc3": {
+        "brother": 0, 
+        "gg": 0, 
+        "is": 0, 
+        "my": 0, 
         "s": 0.47712125471966244, 
         "sb": 0.6317452481581388, 
-        "student": 0.47712125471966244
+        "student": 0.47712125471966244, 
+        "who": 0
     }, 
     "doc4": {
         "brother": 1.0012925283394312, 
         "gg": 0.6989700043360189, 
+        "is": 0, 
+        "my": 0, 
+        "s": 0, 
         "sb": 0.3010299956639812, 
+        "student": 0, 
         "who": 0.6989700043360189
     }
 }
