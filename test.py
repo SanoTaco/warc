@@ -58,9 +58,8 @@ for s in range(np.shape(array)[0]):
             dictTest["doc"+str(int(v)+1)] = {}
         print "doc", int(v)+1, "\ttf:", len(array[s, 1][v])
         print "idf", np.log(doc_i/amount[array[s, 0]]+1)
-        print "TF-IDF for doc", int(v)+1, ":", len(
-            array[s, 1][v])*np.log(doc_i/amount[array[s, 0]]+1), "\n"
-        tf_idf_data = len(array[s, 1][v])*np.log(doc_i/amount[array[s, 0]]+1)
+        print "TF-IDF for doc", int(v)+1, ":", (1+np.log(len(array[s, 1][v])))*np.log10(doc_i/amount[array[s, 0]]+1), "\n"
+        tf_idf_data = (1+np.log(len(array[s, 1][v])))*np.log10(doc_i/amount[array[s, 0]]+1)
         dictTest["doc"+str(int(v)+1)][array[s, 0]] = tf_idf_data
 
 #dictTest=sorted(dictTest)

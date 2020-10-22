@@ -112,6 +112,8 @@ Term frequency: `len(array[row, 1][docid])`<br/>
 
 tests for tf-idf:
 
+<img src="/Users/carloslee/Fall_2020/warc/image-20201022235226100.png" alt="image-20201022235226100" style="zoom:50%;" />
+
 ```python
 test = [
     ["brother", "brother", "is", "my", "brother"],
@@ -129,9 +131,8 @@ for s in range(np.shape(array)[0]):
             dictTest["doc"+str(int(v)+1)] = {}
         print "doc", int(v)+1, "\ttf:", len(array[s, 1][v])
         print "idf", np.log(doc_i/amount[array[s, 0]]+1)
-        print "TF-IDF for doc", int(v)+1, ":", len(
-            array[s, 1][v])*np.log(doc_i/amount[array[s, 0]]+1), "\n"
-        tf_idf_data = len(array[s, 1][v])*np.log(doc_i/amount[array[s, 0]]+1)
+        print "TF-IDF for doc", int(v)+1, ":", (1+np.log(len(array[s, 1][v])))*np.log10(doc_i/amount[array[s, 0]]+1), "\n"
+        tf_idf_data = (1+np.log(len(array[s, 1][v])))*np.log10(doc_i/amount[array[s, 0]]+1)
         dictTest["doc"+str(int(v)+1)][array[s, 0]] = tf_idf_data
 ```
 
@@ -141,70 +142,70 @@ The terminal will show:
 is
 doc 2   tf: 1
 idf 1.0986122886681098
-TF-IDF for doc 2 : 1.0986122886681098 
+TF-IDF for doc 2 : 0.47712125471966244 
 
 doc 1   tf: 1
 idf 1.0986122886681098
-TF-IDF for doc 1 : 1.0986122886681098 
+TF-IDF for doc 1 : 0.47712125471966244 
 
 who
 doc 4   tf: 1
 idf 1.6094379124341003
-TF-IDF for doc 4 : 1.6094379124341003 
+TF-IDF for doc 4 : 0.6989700043360189 
 
 brother
 doc 1   tf: 3
 idf 1.0986122886681098
-TF-IDF for doc 1 : 3.295836866004329 
+TF-IDF for doc 1 : 1.0012925283394312 
 
 doc 4   tf: 3
 idf 1.0986122886681098
-TF-IDF for doc 4 : 3.295836866004329 
+TF-IDF for doc 4 : 1.0012925283394312 
 
 gg
 doc 4   tf: 1
 idf 1.6094379124341003
-TF-IDF for doc 4 : 1.6094379124341003 
+TF-IDF for doc 4 : 0.6989700043360189 
 
 s
 doc 2   tf: 1
 idf 1.0986122886681098
-TF-IDF for doc 2 : 1.0986122886681098 
+TF-IDF for doc 2 : 0.47712125471966244 
 
 doc 3   tf: 1
 idf 1.0986122886681098
-TF-IDF for doc 3 : 1.0986122886681098 
+TF-IDF for doc 3 : 0.47712125471966244 
 
 student
 doc 2   tf: 1
 idf 1.0986122886681098
-TF-IDF for doc 2 : 1.0986122886681098 
+TF-IDF for doc 2 : 0.47712125471966244 
 
 doc 3   tf: 1
 idf 1.0986122886681098
-TF-IDF for doc 3 : 1.0986122886681098 
+TF-IDF for doc 3 : 0.47712125471966244 
 
 sb
 doc 2   tf: 1
 idf 0.6931471805599453
-TF-IDF for doc 2 : 0.6931471805599453 
+TF-IDF for doc 2 : 0.3010299956639812 
 
 doc 4   tf: 1
 idf 0.6931471805599453
-TF-IDF for doc 4 : 0.6931471805599453 
+TF-IDF for doc 4 : 0.3010299956639812 
 
 doc 3   tf: 3
 idf 0.6931471805599453
-TF-IDF for doc 3 : 2.0794415416798357 
+TF-IDF for doc 3 : 0.6317452481581388 
 
 my
 doc 2   tf: 1
 idf 1.0986122886681098
-TF-IDF for doc 2 : 1.0986122886681098 
+TF-IDF for doc 2 : 0.47712125471966244 
 
 doc 1   tf: 1
 idf 1.0986122886681098
-TF-IDF for doc 1 : 1.0986122886681098
+TF-IDF for doc 1 : 0.47712125471966244
 ```
 
 Make `dictTest` to be json formatted and sorted, we will get:
@@ -212,27 +213,27 @@ Make `dictTest` to be json formatted and sorted, we will get:
 ```python
 {
     "doc1": {
-        "brother": 3.295836866004329, 
-        "is": 1.0986122886681098, 
-        "my": 1.0986122886681098
+        "brother": 1.0012925283394312, 
+        "is": 0.47712125471966244, 
+        "my": 0.47712125471966244
     }, 
     "doc2": {
-        "is": 1.0986122886681098, 
-        "my": 1.0986122886681098, 
-        "s": 1.0986122886681098, 
-        "sb": 0.6931471805599453, 
-        "student": 1.0986122886681098
+        "is": 0.47712125471966244, 
+        "my": 0.47712125471966244, 
+        "s": 0.47712125471966244, 
+        "sb": 0.3010299956639812, 
+        "student": 0.47712125471966244
     }, 
     "doc3": {
-        "s": 1.0986122886681098, 
-        "sb": 2.0794415416798357, 
-        "student": 1.0986122886681098
+        "s": 0.47712125471966244, 
+        "sb": 0.6317452481581388, 
+        "student": 0.47712125471966244
     }, 
     "doc4": {
-        "brother": 3.295836866004329, 
-        "gg": 1.6094379124341003, 
-        "sb": 0.6931471805599453, 
-        "who": 1.6094379124341003
+        "brother": 1.0012925283394312, 
+        "gg": 0.6989700043360189, 
+        "sb": 0.3010299956639812, 
+        "who": 0.6989700043360189
     }
 }
 ```
