@@ -10,7 +10,7 @@ test = [
     ["brother", "brother", "is", "my", "brother"],
     ["s", "is", "my", "sb", "student"],
     ["s", "sb", "sb", "sb", "student"],
-    ["brother", "who", "student", "sb", "gg"]
+    ["brother", "who", "brother", "sb", "brother", "gg"]
 ]
 
 total = {}
@@ -45,13 +45,13 @@ print amount["brother"]
 #dtype = dict(names = names, formats=formats)
 array = np.array(list(terms.items()))
 
-print array
+#print array
 
 lentest = 0
 
 dictTest = {}
-
-for s in range(1, doc_i):
+#print doc_i
+for s in range(np.shape(array)[0]):
     print array[s, 0]
     for v in array[s, 1]:
         if v not in dictTest:
@@ -63,12 +63,12 @@ for s in range(1, doc_i):
         tf_idf_data = len(array[s, 1][v])*np.log(doc_i/amount[array[s, 0]]+1)
         dictTest[v][array[s, 0]] = tf_idf_data
 
-print dictTest
+
 json_object = json.dumps(dictTest, indent=4)
 print(json_object)
-for docNumber in dictTest:
-    for data in dictTest[docNumber]:
-        print docNumber, data, dictTest[docNumber][data]
+# for docNumber in dictTest:
+#    for data in dictTest[docNumber]:
+#        print docNumber, data, dictTest[docNumber][data]
 
 query = raw_input("Query: ")
 

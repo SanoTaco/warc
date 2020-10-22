@@ -113,9 +113,16 @@ Term frequency: `len(array[row, 1][docid])`<br/>
 tests for tf-idf:
 
 ```python
+test = [
+    ["brother", "brother", "is", "my", "brother"],
+    ["s", "is", "my", "sb", "student"],
+    ["s", "sb", "sb", "sb", "student"],
+    ["brother", "who", "brother", "sb", "brother", "gg"]
+]
+
 dictTest = {}
 
-for s in range(1, doc_i):
+for s in range(np.shape(array)[0]):
     print array[s, 0]
     for v in array[s, 1]:
         if v not in dictTest:
@@ -126,12 +133,20 @@ for s in range(1, doc_i):
             array[s, 1][v])*np.log(doc_i/amount[array[s, 0]]+1), "\n"
         tf_idf_data = len(array[s, 1][v])*np.log(doc_i/amount[array[s, 0]]+1)
         dictTest[v][array[s, 0]] = tf_idf_data
-print dictTest
 ```
 
 The terminal will show:
 
 ```bash
+is
+doc 2   tf: 1
+idf 1.0986122886681098
+TF-IDF for doc 2 : 1.0986122886681098 
+
+doc 1   tf: 1
+idf 1.0986122886681098
+TF-IDF for doc 1 : 1.0986122886681098 
+
 who
 doc 4   tf: 1
 idf 1.6094379124341003
@@ -142,45 +157,82 @@ doc 1   tf: 3
 idf 1.0986122886681098
 TF-IDF for doc 1 : 3.295836866004329 
 
-doc 4   tf: 1
+doc 4   tf: 3
 idf 1.0986122886681098
-TF-IDF for doc 4 : 1.0986122886681098 
+TF-IDF for doc 4 : 3.295836866004329 
 
 gg
 doc 4   tf: 1
 idf 1.6094379124341003
-TF-IDF for doc 4 : 1.6094379124341003
+TF-IDF for doc 4 : 1.6094379124341003 
 
-{'0': {'brother': 3.295836866004329}, '3': {'gg': 1.6094379124341003, 'who': 1.6094379124341003, 'brother': 1.0986122886681098}}
+s
+doc 2   tf: 1
+idf 1.0986122886681098
+TF-IDF for doc 2 : 1.0986122886681098 
+
+doc 3   tf: 1
+idf 1.0986122886681098
+TF-IDF for doc 3 : 1.0986122886681098 
+
+student
+doc 2   tf: 1
+idf 1.0986122886681098
+TF-IDF for doc 2 : 1.0986122886681098 
+
+doc 3   tf: 1
+idf 1.0986122886681098
+TF-IDF for doc 3 : 1.0986122886681098 
+
+sb
+doc 2   tf: 1
+idf 0.6931471805599453
+TF-IDF for doc 2 : 0.6931471805599453 
+
+doc 4   tf: 1
+idf 0.6931471805599453
+TF-IDF for doc 4 : 0.6931471805599453 
+
+doc 3   tf: 3
+idf 0.6931471805599453
+TF-IDF for doc 3 : 2.0794415416798357 
+
+my
+doc 2   tf: 1
+idf 1.0986122886681098
+TF-IDF for doc 2 : 1.0986122886681098 
+
+doc 1   tf: 1
+idf 1.0986122886681098
+TF-IDF for doc 1 : 1.0986122886681098
 ```
 
 Make `dictTest` json format, we will get:
 
-```json
+```python
 {
+    "1": {
+        "sb": 0.6931471805599453, #tf-idf
+        "is": 1.0986122886681098, 
+        "my": 1.0986122886681098, 
+        "s": 1.0986122886681098, 
+        "student": 1.0986122886681098
+    }, 
     "0": {
+        "is": 1.0986122886681098, 
+        "my": 1.0986122886681098, 
         "brother": 3.295836866004329
     }, 
     "3": {
         "gg": 1.6094379124341003, 
+        "sb": 0.6931471805599453, 
         "who": 1.6094379124341003, 
-        "brother": 1.0986122886681098
-    }
-}
-```
-
-It means:
-
-```json
-{
-    "doc1": {
-        "word1": "tf-idf"
+        "brother": 3.295836866004329
     }, 
-    "doc2": {
-        "word1": "tf-idf", 
-        "word2": "tf-idf", 
-        "word3": "tf-idf"
+    "2": {
+        "sb": 2.0794415416798357, 
+        "s": 1.0986122886681098, 
+        "student": 1.0986122886681098
     }
 }
 ```
-
