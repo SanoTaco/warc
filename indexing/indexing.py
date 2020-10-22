@@ -5,8 +5,6 @@ terms = {}
 amount = {}
 
 
-
-
 def indexing(dictList):
     finalOutput = ""
     doc_i = 0
@@ -35,8 +33,7 @@ def indexing(dictList):
                     terms[word][docid][pos]).replace("[", "").replace("]", "")+">;"
         testOutput = testOutput+">"
         finalOutput = finalOutput + testOutput+"\n"
-        #print testOutput
-        
+        # print testOutput
 
     #json_object = json.dumps(terms, indent=4)
     # print(json_object)
