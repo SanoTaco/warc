@@ -276,7 +276,7 @@ Make `term_table` to be json formatted and sorted, we will get:
 }
 ```
 
-## Try to implement search function search in `test_for_query.py`(for HW2):
+## ~~Try to implement search function search in `test_for_query.py`(for HW2):~~
 
 Single keywords:
 

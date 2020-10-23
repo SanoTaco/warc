@@ -42,3 +42,5 @@ def indexing(dictList):
     f = open("output.dict", "w")
     f.write(finalOutput)
     f.close()
+    
+    return terms,amount,doc_i
