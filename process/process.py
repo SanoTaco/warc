@@ -1,17 +1,12 @@
 import warc
 import gzip
 import re
-
-
 from bs4 import BeautifulSoup
 from string import digits
 
-
-dictList = []
-
-
-def preProcessing(content):
-    with open(content) as f:
+def preProcessing(input_file):
+    dictList = []
+    with open(input_file) as f:
         is_file = False
         content = ""
         index = 1

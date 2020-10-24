@@ -5,29 +5,40 @@ import json
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 
-
-def query(terms_file, amount_file, total):
+def query():
     terms_table = {}
     query_table = {}
     temp_table = {}
     idf = {}
+    df={}
     termsList = []
+    doc_i=0
+    with open("page.total") as hama:
+        doc_i=hama.readline()
 
-    array = np.array(list(terms_file.items()))
-    for s in range(np.shape(array)[0]):
-        termsList.append(array[s, 0])
-        for v in array[s, 1]:
-            if str(int(v)) not in temp_table:
-                temp_table[str(int(v))] = {}
-            if array[s, 0] not in idf:
-                idf[array[s, 0]] = {}
-            idf[array[s, 0]] = math.log(total/amount_file[array[s, 0]]+1)
-            tf_idf_data = (1+math.log(len(array[s, 1][v]))) * \
-                math.log10(total/amount_file[array[s, 0]]+1)
-            if tf_idf_data > 0:
-                temp_table[str(int(v))][array[s, 0]] = tf_idf_data
+    with open("output.dict") as f:
+        text= json.load(f)
+
+    doc_i=int(doc_i)
+    
+    for word in text:
+        if word not in idf:
+            idf[word]=0
+        termsList.append(word)
+        for docid in text[word]:
+            if str(docid) == "df":
+                df[word]=text[word][docid]
+                idf[word]=math.log10(doc_i/df[word])
             else:
-                temp_table[str(int(v))][array[s, 0]] = 0
+                if docid not in temp_table:
+                    temp_table[docid]={}
+                for name in text[word][docid]:
+                    if str(name) == "tf":
+                        tf_idf_data = (1+math.log(text[word][docid][name])) * idf[word]
+                        if tf_idf_data > 0:
+                            temp_table[docid][word] = tf_idf_data
+                        else:
+                            temp_table[docid][word] = 0
 
     for docid in temp_table:
         terms_table[docid] = {}
@@ -35,7 +46,7 @@ def query(terms_file, amount_file, total):
             terms_table[docid][x] = 0
             if x in temp_table[docid].keys():
                 terms_table[docid][x] = temp_table[docid][x]
-
+    
     query = raw_input("Query: ")
     query = query.lower()
     query = query.strip()
@@ -68,7 +79,7 @@ def query(terms_file, amount_file, total):
         temp_set = map(float, temp_set)
         output = str(cosine_similarity(query_set, [temp_set])).replace("[", "").replace("]", "")
         output=float(output)
-        output_set[int(docid)+1]=output
+        output_set[docid]=output
         #print "  ",int(docid)+1, "\t\t\t", output
 
     output_df= pd.DataFrame(output_set.items(),columns=['doc#','similarity score'])

@@ -41,13 +41,14 @@ for s in range(np.shape(array)[0]):
             dictTest[str(int(v))] = {}
         if array[s, 0] not in idf:
             idf[array[s, 0]] = {}
-        idf[array[s, 0]] = math.log(doc_i/amount[array[s, 0]]+1)
-        tf_idf_data = (1+math.log(len(array[s, 1][v]))) * \
-            math.log10(doc_i/amount[array[s, 0]]+1)
+        idf[array[s, 0]] = math.log10(doc_i/amount[array[s, 0]])
+        tf_idf_data = (1+math.log10(len(array[s, 1][v]))) * \
+            math.log10(doc_i/amount[array[s, 0]])
         if tf_idf_data > 0:
             dictTest[str(int(v))][array[s, 0]] = tf_idf_data
         else:
             dictTest[str(int(v))][array[s, 0]] = 0
+
 
 for docid in dictTest:
     terms_table[docid] = {}
@@ -55,7 +56,7 @@ for docid in dictTest:
         terms_table[docid][x] = 0
         if x in dictTest[docid].keys():
             terms_table[docid][x] = dictTest[docid][x]
-
+print terms_table
 query = raw_input("Query: ")
 query = query.lower()
 query = query.strip()
@@ -74,6 +75,8 @@ for word in idf.keys():
     if word in search_words:
         query_table[word] = idf[word]
 
+print terms_table
+print query_table
 
 terms_set = pd.DataFrame(terms_table)
 query_set = pd.DataFrame(query_table, index=terms_table.keys()).sort_index()
