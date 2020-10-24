@@ -2,8 +2,10 @@
 import numpy as np
 import math
 import json
+import random
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
+
 
 def query():
     terms_table = {}
@@ -48,9 +50,26 @@ def query():
                 terms_table[docid][x] = temp_table[docid][x]
     
     query = raw_input("Query: ")
-    query = query.lower()
-    query = query.strip()
-    search_words = query.split()
+    if 'AND' in query:
+        and_query = query.split("AND")
+        and_query = str(and_query).replace("[","").replace("]","").replace("'","").replace(",","").replace("AND","")
+        #print and_query
+        and_query = and_query.lower()
+        and_query = and_query.strip()
+        search_words = and_query.split()
+    elif 'OR' in query:
+        or_query= query.split("OR")
+        #print or_query
+        query=random.choice(or_query)
+        query = query.lower()
+        query = query.strip()
+        search_words = query.split()
+        #search_words=random.choice(search_words)
+    else:
+        query = query.lower()
+        query = query.strip()
+        search_words = query.split()
+
     for x in search_words:
         if x not in idf.keys():
             idf[x] = 0
