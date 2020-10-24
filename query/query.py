@@ -15,6 +15,7 @@ def query():
     df={}
     termsList = []
     doc_i=0
+    
     with open("page.total") as hama:
         doc_i=hama.readline()
 

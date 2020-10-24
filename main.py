@@ -1,24 +1,26 @@
 import sys
 import os
 import shutil
+import time
 from process.process import preProcessing
 from indexing.indexing import indexing
 from query.query import query
-
+from process.process import parsing
 
 
 def create():
-    path = 'output_htmls'
-    if not os.path.exists(path):
-        os.makedirs(path)
+    tStart = time.time()
+    time.sleep(2)
     input_file = sys.argv[1]
     print "Start ......"
     print "Parsing HTML ......"
     print "Dumping ......" 
-    dictList = preProcessing(input_file)
+    index=preProcessing(input_file)
+    dictList = parsing(index[0],index[1])
     indexing(dictList)
     print "Finish !!!"
-    shutil.rmtree(path)
+    tEnd = time.time()
+    print "It cost %f sec" % (tEnd - tStart)
 
 
 if __name__ == "__main__":
