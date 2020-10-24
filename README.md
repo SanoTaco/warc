@@ -54,7 +54,7 @@ Searching for words:  ['hama', 'able']
  doc72          0.054423
  doc26          0.037607
  doc15          0.035602
- .....					........
+ .....
 ```
 
 
