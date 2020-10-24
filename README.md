@@ -45,6 +45,7 @@ Searching for words:  ['able']
 Query: able abn
 Searching for words:  ['able', 'abn']
 
+###### Example ######
 Query: gfw able OR hama able
 
 Searching for words:  ['hama', 'able'] 
