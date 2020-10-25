@@ -16,7 +16,7 @@ def create():
     print "Parsing HTML ......"
     print "Dumping ......" 
     index=preProcessing(input_file)
-    dictList = parsing(index[0],index[1])
+    dictList = parsing(index)
     indexing(dictList)
     print "Finish !!!"
     tEnd = time.time()
