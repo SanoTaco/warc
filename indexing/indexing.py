@@ -16,12 +16,12 @@ def indexing(dictList):
             terms[word][str(doc_i)] = [
                 i for i, e in enumerate(v) if e == word]
         doc_i = doc_i+1
-
+        print str(doc_i)+"vv done."
     for word in terms:
         amount[word] = 0
         for docid in terms[word]:
             amount[word] = amount[word]+1
-
+        print str(word)+"vv done."
     for word in sorted(terms):
         testOutput ="'" +word+"':{'df':"+str(amount[word])+","
         for docid in sorted(terms[word]):
@@ -30,7 +30,7 @@ def indexing(dictList):
         testOutput = testOutput+"},"
         testOutput = list(testOutput)
         testOutput[len(testOutput)-3]=''
-        #print str(word)+" has been done."
+        print str(word)+" has been done."
         finalOutput = finalOutput + ''.join(testOutput)+"\n"
 
     finalOutput =list(finalOutput)
