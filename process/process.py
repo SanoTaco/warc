@@ -51,7 +51,7 @@ def parsing(index):
         text = text.lower().encode("utf-8")
         text = text.split("\n")
         dictList.append(text)
-        #print str(l)+" has been done ."
+        print str(l)+" has been done ."
     #tEnd = time.time()
     #print ("Parsing cost %f sec" % (tEnd - tStart))
     return dictList
