@@ -15,7 +15,7 @@ def query():
     df={}
     termsList = []
     doc_i=0
-    
+
     with open("page.total") as hama:
         doc_i=hama.readline()
 
@@ -89,7 +89,7 @@ def query():
     query_set = pd.DataFrame(query_table, index=terms_table.keys()).sort_index()
     query_set = query_set[:1].values.tolist()
     output_set={}
-    print "\nSearching for words: ", search_words, "\n"
+    print ("\nSearching for words: ", search_words, "\n")
     #print "<doc#>  \t <similarity score>"
     #print '-'*40
     for docid in sorted(terms_table.keys()):
@@ -104,4 +104,4 @@ def query():
 
     output_df= pd.DataFrame(output_set.items(),columns=['doc#','similarity score'])
     #output_df.drop(output_df.columns[0],axis=1,inplace=True)
-    print output_df.sort_values(by='similarity score', ascending=False).to_string(index=False)
+    print (output_df.sort_values(by='similarity score', ascending=False).to_string(index=False))

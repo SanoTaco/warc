@@ -1,18 +1,20 @@
 import json
+#import time
 
 def indexing(dictList):
+    #tStart = time.time()
     terms = {}
     amount = {} 
     finalOutput="{\n"
     doc_i = 0
-    for docid in dictList:
-        for word in dictList[docid]:
+    for v in dictList:
+        for word in v:
             if word not in terms:
                 terms[word] = {}
             if str(doc_i) not in terms[word]:
                 terms[word][str(doc_i)] = {}
             terms[word][str(doc_i)] = [
-                i for i, e in enumerate(dictList[docid]) if e == word]
+                i for i, e in enumerate(v) if e == word]
         doc_i = doc_i+1
 
     for word in terms:
@@ -28,6 +30,7 @@ def indexing(dictList):
         testOutput = testOutput+"},"
         testOutput = list(testOutput)
         testOutput[len(testOutput)-3]=''
+        #print str(word)+" has been done."
         finalOutput = finalOutput + ''.join(testOutput)+"\n"
 
     finalOutput =list(finalOutput)
@@ -42,3 +45,6 @@ def indexing(dictList):
     hama = open("page.total", "w")
     hama.write(str(doc_i))
     hama.close()
+
+    #tEnd = time.time()
+    #print ("Indexing cost %f sec" % (tEnd - tStart))
