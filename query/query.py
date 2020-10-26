@@ -21,7 +21,7 @@ def query():
 
     with open("output.dict") as f:
         text= json.load(f)
-
+    #print text
     doc_i=int(doc_i)
     
     for word in text:
@@ -89,7 +89,7 @@ def query():
     query_set = pd.DataFrame(query_table, index=terms_table.keys()).sort_index()
     query_set = query_set[:1].values.tolist()
     output_set={}
-    print ("\nSearching for words: ", search_words, "\n")
+    print "\nSearching for words: ", search_words, "\n"
     #print "<doc#>  \t <similarity score>"
     #print '-'*40
     for docid in sorted(terms_table.keys()):

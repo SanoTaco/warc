@@ -4,8 +4,7 @@ import json
 def indexing(dictList):
     #tStart = time.time()
     terms = {}
-    amount = {} 
-    finalOutput="{\n"
+    test = {} 
     doc_i = 0
     for v in dictList:
         for word in v:
@@ -16,30 +15,28 @@ def indexing(dictList):
             terms[word][str(doc_i)] = [
                 i for i, e in enumerate(v) if e == word]
         doc_i = doc_i+1
-        #print str(doc_i)+"dictList done."
-    for word in terms:
-        amount[word] = 0
-        for docid in terms[word]:
-            amount[word] = amount[word]+1
-        #print str(word)+"vv done."
-    for word in sorted(terms):
-        testOutput ="'" +word+"':{'df':"+str(amount[word])+","
-        for docid in sorted(terms[word]):
-            testOutput = testOutput+"'doc"+str(int(docid)+1)+"':{'tf':"+str(len(terms[word][docid]))+","
-            testOutput = testOutput+"'pos':"+str(terms[word][docid])+"},"
-        testOutput = testOutput+"},"
-        testOutput = list(testOutput)
-        testOutput[len(testOutput)-3]=''
-        #print str(word)+" has been done."
-        finalOutput = finalOutput + ''.join(testOutput)+"\n"
 
-    finalOutput =list(finalOutput)
-    finalOutput[len(finalOutput)-2]=''
-    realfinal= ''.join(finalOutput)+'}'
-    realfinal=realfinal.replace( "'", '"' ).encode("utf-8")
+    
+    for word in sorted(terms):
+        test[word]={}
+        test[word]["df"]=len(terms[word])
+        for i in sorted(terms[word]):
+            test[word][i]={}
+            test[word][i]["pos"]=terms[word][i]
+            test[word][i]["tf"]=len(terms[word][i])
+        #print test[word]
+
+    #print test
+
+    #finalOutput =list(finalOutput)
+    #finalOutput[len(finalOutput)-2]=''
+    #realfinal= ''.join(finalOutput)+'}'
+    #realfinal=realfinal.replace( "'", '"' ).encode("utf-8")
+    json_object = json.dumps(test, indent = 2,sort_keys=True)   
+    #print(json_object)
 
     f = open("output.dict", "w")
-    f.write(realfinal)
+    f.write(json_object)
     f.close()
 
     hama = open("page.total", "w")

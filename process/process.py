@@ -43,7 +43,9 @@ def parsing(index):
         for tag in soup(['script', 'style']):
             tag.extract()
         text = soup.get_text(separator=u'\n')
+        text=text.replace("_", "\n")
         text = text.strip()
+        text = re.sub(r'[^\w]', '\n', text)
         text = re.sub(r'[^\w]', '\n', text)
         text = re.sub(r'\n\s*\n', r'\n\n', text, flags=re.M)
         text = ''.join(i for i in text if not i.isdigit())
