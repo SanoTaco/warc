@@ -44,7 +44,6 @@ def parsing(index):
             tag.extract()
         text = soup.get_text(separator=u'\n')
         text = text.replace("_", "\n")
-        text = text.lstrip()
         text = text.strip()
         text = re.sub(r'[^\w]', '\n', text)
         text = re.sub(r'[^\w]', '\n', text)
@@ -54,7 +53,8 @@ def parsing(index):
             [s for s in text.strip().splitlines(True) if s.strip("\r\n")])
         text = text.lower().encode("utf-8")
         text = text.split("\n")
-        dictList.append(text)
+        wordList = [i for i in text if i.isalpha()]
+        dictList.append(wordList)
         #print str(l)+" has been done ."
     #tEnd = time.time()
     #print ("Parsing cost %f sec" % (tEnd - tStart))

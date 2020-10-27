@@ -94,10 +94,12 @@ def query():
     output_set={}
     for doc_id in docs_table:
         for term in search_words:
-            #print list(query_table[term]["w"])
-            #print docs_table[doc_id][term]["w"]
-
-            output = str(cosine_similarity(q, d))
+            q=query_table[term]["tf"]
+            print q
+            d=docs_table[doc_id][term]["w"]
+            print d
+            output = str(cosine_similarity([[q]], [[d]]))
+            print output
         #print temp
 
 
