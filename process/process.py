@@ -34,6 +34,11 @@ def crash_clean(html_text):
 
     return html_text
 
+def not_empty(s):
+    return s and s.strip()
+
+#res = filter(not_empty, ['1', '', '2', None, '3', '  '])
+
 
 def parsing(index):
     #tStart = time.time()
@@ -53,8 +58,8 @@ def parsing(index):
             [s for s in text.strip().splitlines(True) if s.strip("\r\n")])
         text = text.lower().encode("utf-8")
         text = text.split("\n")
-        wordList = [i for i in text if i.isalpha()]
-        dictList.append(wordList)
+        text = filter(not_empty, text)
+        dictList.append(text)
         #print str(l)+" has been done ."
     #tEnd = time.time()
     #print ("Parsing cost %f sec" % (tEnd - tStart))
