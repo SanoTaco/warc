@@ -1,107 +1,104 @@
-
-import numpy as np
 import math
 import json
 import random
+import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 
 
 def query():
-    terms_table = {}
+    docs_set = set()
+    output_dict = {}
+    term_index = {}
     query_table = {}
-    temp_table = {}
-    idf = {}
-    df={}
-    termsList = []
-    doc_i=0
-
-    with open("page.total") as hama:
-        doc_i=hama.readline()
-
-    with open("output.dict") as f:
-        text= json.load(f)
-    #print text
-    doc_i=int(doc_i)
-    
-    for word in text:
-        if word not in idf:
-            idf[word]=0
-        termsList.append(word)
-        for docid in text[word]:
-            if str(docid) == "df":
-                df[word]=text[word][docid]
-                idf[word]=math.log10(doc_i/df[word])
-            else:
-                if docid not in temp_table:
-                    temp_table[docid]={}
-                for name in text[word][docid]:
-                    if str(name) == "tf":
-                        tf_idf_data = (1+math.log(text[word][docid][name])) * idf[word]
-                        if tf_idf_data > 0:
-                            temp_table[docid][word] = tf_idf_data
-                        else:
-                            temp_table[docid][word] = 0
-
-    for docid in temp_table:
-        terms_table[docid] = {}
-        for x in termsList:
-            terms_table[docid][x] = 0
-            if x in temp_table[docid].keys():
-                terms_table[docid][x] = temp_table[docid][x]
-    
+    docs_table={}
     query = raw_input("Query: ")
     if 'AND' in query:
         and_query = query.split("AND")
-        and_query = str(and_query).replace("[","").replace("]","").replace("'","").replace(",","").replace("AND","")
-        #print and_query
+        and_query = str(and_query).replace("[", "").replace("]", "").replace(
+            "'", "").replace(",", "").replace("AND", "")
         and_query = and_query.lower()
         and_query = and_query.strip()
         search_words = and_query.split()
     elif 'OR' in query:
-        or_query= query.split("OR")
-        #print or_query
-        query=random.choice(or_query)
+        or_query = query.split("OR")
+        query = random.choice(or_query)
         query = query.lower()
         query = query.strip()
         search_words = query.split()
-        #search_words=random.choice(search_words)
     else:
         query = query.lower()
         query = query.strip()
         search_words = query.split()
 
-    for x in search_words:
-        if x not in idf.keys():
-            idf[x] = 0
-
-    for docid in terms_table:
-        for x in search_words:
-            if x not in termsList:
-                terms_table[docid][x] = 0
-
-    for word in idf.keys():
-        query_table[word] = 0
-        if word in search_words:
-            query_table[word] = idf[word]
-    
-    terms_set = pd.DataFrame(terms_table)
-    query_set = pd.DataFrame(query_table, index=terms_table.keys()).sort_index()
-    query_set = query_set[:1].values.tolist()
-    output_set={}
     print "\nSearching for words: ", search_words, "\n"
-    #print "<doc#>  \t <similarity score>"
-    #print '-'*40
-    for docid in sorted(terms_table.keys()):
-        temp = terms_set.loc[:, [docid]].values.tolist()
-        temp_set =  str(temp).replace("[", "").replace("]", "")
-        temp_set = temp_set.split(",")
-        temp_set = map(float, temp_set)
-        output = str(cosine_similarity(query_set, [temp_set])).replace("[", "").replace("]", "")
-        output=float(output)
-        output_set[docid]=output
-        #print "  ",int(docid)+1, "\t\t\t", output
+    with open("page.total") as hama:
+        N = hama.readline()
+        N = int(N)
 
-    output_df= pd.DataFrame(output_set.items(),columns=['doc#','similarity score'])
-    #output_df.drop(output_df.columns[0],axis=1,inplace=True)
-    print (output_df.sort_values(by='similarity score', ascending=False).to_string(index=False))
+    with open("output.dict") as f:
+        output_dict = json.load(f)
+
+    print "\nDumping words to dict ...\n"
+    
+    for term in search_words:
+        if term in output_dict:
+            term_index[term] = output_dict[term]
+            #print len(term_index[term])
+            #print term_index
+            for doc in term_index[term]:
+                if str(doc)!="df":
+                    docs_set.add(doc)
+            #print docs_set
+            query_table[term] = {}
+            query_table[term]["tf"] = 1
+            query_table[term]["df"] = len(term_index[term])
+            query_table[term]["idf"] = math.log(
+                N / query_table[term]["df"], 10)
+            query_table[term]["w"] = (
+                1 + math.log(query_table[term]["tf"])) * query_table[term]["idf"]
+        else:
+            term_index[term] = {}
+            query_table[term] = {}
+            query_table[term]["tf"] = 1
+            query_table[term]["df"] = 0
+            query_table[term]["idf"] = 0
+            query_table[term]["w"] = 0
+        
+    while True:
+        try:
+            doc_id = str(docs_set.pop())
+        except KeyError:
+            break
+        docs_table[doc_id] = {}
+        for term in search_words:
+            #print doc_id
+            docs_table[doc_id][term] = {}
+            docs_table[doc_id][term]["tf"] = 0
+            if doc_id in term_index[term]:
+                docs_table[doc_id][term]["tf"] = term_index[term][doc_id]["tf"]
+    
+    for doc_id in docs_table:
+        for term in search_words:
+            if docs_table[doc_id][term]["tf"] > 0:
+                docs_table[doc_id][term]["w"] = (1 + math.log(docs_table[doc_id][term]["tf"], 10)) * math.log(
+                    query_table[term]["df"], 10)
+            else:
+                docs_table[doc_id][term]["w"] = 0
+    #print docs_table['24']
+    docs_df = pd.DataFrame(docs_table)
+    #query_df = pd.DataFrame(query_table)
+    #query_w = query_df.loc['w'].values.tolist()
+    print docs_df
+    
+    output_set={}
+    for doc_id in docs_table:
+        for term in search_words:
+            #print list(query_table[term]["w"])
+            #print docs_table[doc_id][term]["w"]
+
+            output = str(cosine_similarity(q, d))
+        #print temp
+
+
+    
