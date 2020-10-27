@@ -12,24 +12,11 @@ def query():
     term_index = {}
     query_table = {}
     docs_table={}
+    docs_score={}
     query = raw_input("Query: ")
-    if 'AND' in query:
-        and_query = query.split("AND")
-        and_query = str(and_query).replace("[", "").replace("]", "").replace(
-            "'", "").replace(",", "").replace("AND", "")
-        and_query = and_query.lower()
-        and_query = and_query.strip()
-        search_words = and_query.split()
-    elif 'OR' in query:
-        or_query = query.split("OR")
-        query = random.choice(or_query)
-        query = query.lower()
-        query = query.strip()
-        search_words = query.split()
-    else:
-        query = query.lower()
-        query = query.strip()
-        search_words = query.split()
+    query = query.lower()
+    query = query.strip()
+    search_words = query.split()
 
     print "\nSearching for words: ", search_words, "\n"
     with open("page.total") as hama:
@@ -64,7 +51,8 @@ def query():
             query_table[term]["df"] = 0
             query_table[term]["idf"] = 0
             query_table[term]["w"] = 0
-        
+    
+    euclidean_length = 0    
     while True:
         try:
             doc_id = str(docs_set.pop())
@@ -77,7 +65,9 @@ def query():
             docs_table[doc_id][term]["tf"] = 0
             if doc_id in term_index[term]:
                 docs_table[doc_id][term]["tf"] = term_index[term][doc_id]["tf"]
-    
+            euclidean_length += docs_table[doc_id][term]["tf"] * docs_table[doc_id][term]["tf"]
+    euclidean_length = math.sqrt(euclidean_length)
+
     for doc_id in docs_table:
         for term in search_words:
             if docs_table[doc_id][term]["tf"] > 0:
@@ -85,22 +75,23 @@ def query():
                     query_table[term]["df"], 10)
             else:
                 docs_table[doc_id][term]["w"] = 0
-    #print docs_table['24']
-    docs_df = pd.DataFrame(docs_table)
-    #query_df = pd.DataFrame(query_table)
-    #query_w = query_df.loc['w'].values.tolist()
-    print docs_df
     
-    output_set={}
-    for doc_id in docs_table:
-        for term in search_words:
-            q=query_table[term]["tf"]
-            print q
-            d=docs_table[doc_id][term]["w"]
-            print d
-            output = str(cosine_similarity([[q]], [[d]]))
-            print output
-        #print temp
+    query_len = 0
+    for term in search_words:
+        query_len += query_table[term]["w"] * query_table[term]["w"]
+    query_len = math.sqrt(query_len)
 
+    for doc in docs_table:
+        up_part = 0
+        doc_len = 0
+        for terms in search_words:
+            up_part += docs_table[doc][terms]["w"] * query_table[terms]["w"]
+            doc_len += docs_table[doc][terms]["w"] * docs_table[doc][terms]["w"]
+        docs_score[doc] = up_part / (math.sqrt(doc_len) * query_len)
 
-    
+    print("doc#\tsimilarity score")
+    for i in sorted(docs_score, key=docs_score.get, reverse=True):
+        print("%d\t%.3f" % (int(i), docs_score[i]))
+
+def query_bs():
+    print "Write Boolean Search here!"
