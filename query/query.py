@@ -11,13 +11,13 @@ def query():
     output_dict = {}
     term_index = {}
     query_table = {}
-    docs_table={}
-    docs_score={}
+    docs_table = {}
+    docs_score = {}
     query = raw_input("Query: ")
     query = query.lower()
     query = query.strip()
     search_words = query.split()
-
+    return_count = 10
     print "\nSearching for words: ", search_words, "\n"
     with open("page.total") as hama:
         N = hama.readline()
@@ -27,14 +27,14 @@ def query():
         output_dict = json.load(f)
 
     print "\nDumping words to dict ...\n"
-    
+
     for term in search_words:
         if term in output_dict:
             term_index[term] = output_dict[term]
             #print len(term_index[term])
             #print term_index
             for doc in term_index[term]:
-                if str(doc)!="df":
+                if str(doc) != "df":
                     docs_set.add(doc)
             #print docs_set
             query_table[term] = {}
@@ -51,8 +51,8 @@ def query():
             query_table[term]["df"] = 0
             query_table[term]["idf"] = 0
             query_table[term]["w"] = 0
-    
-    euclidean_length = 0    
+
+    euclidean_length = 0
     while True:
         try:
             doc_id = str(docs_set.pop())
@@ -65,7 +65,8 @@ def query():
             docs_table[doc_id][term]["tf"] = 0
             if doc_id in term_index[term]:
                 docs_table[doc_id][term]["tf"] = term_index[term][doc_id]["tf"]
-            euclidean_length += docs_table[doc_id][term]["tf"] * docs_table[doc_id][term]["tf"]
+            euclidean_length += docs_table[doc_id][term]["tf"] * \
+                docs_table[doc_id][term]["tf"]
     euclidean_length = math.sqrt(euclidean_length)
 
     for doc_id in docs_table:
@@ -75,7 +76,7 @@ def query():
                     query_table[term]["df"], 10)
             else:
                 docs_table[doc_id][term]["w"] = 0
-    
+
     query_len = 0
     for term in search_words:
         query_len += query_table[term]["w"] * query_table[term]["w"]
@@ -86,12 +87,17 @@ def query():
         doc_len = 0
         for terms in search_words:
             up_part += docs_table[doc][terms]["w"] * query_table[terms]["w"]
-            doc_len += docs_table[doc][terms]["w"] * docs_table[doc][terms]["w"]
+            doc_len += docs_table[doc][terms]["w"] * \
+                docs_table[doc][terms]["w"]
         docs_score[doc] = up_part / (math.sqrt(doc_len) * query_len)
 
     print("doc#\tsimilarity score")
     for i in sorted(docs_score, key=docs_score.get, reverse=True):
+        return_count -= 1
+        if return_count < 0:
+            break
         print("%d\t%.3f" % (int(i), docs_score[i]))
+
 
 def query_bs():
     print "Write Boolean Search here!"
