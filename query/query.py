@@ -1,6 +1,7 @@
 import math
 import json
 import random
+import sys
 import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
@@ -18,15 +19,18 @@ def query():
     query = query.strip()
     search_words = query.split()
     return_count = 10
-    print "\nSearching for words: ", search_words, "\n"
+    return_count = int(raw_input("K (how many document may display): "))
+
+    print "Searching for words: ", search_words
     with open("page.total") as hama:
         N = hama.readline()
         N = int(N)
 
+    print "Loading dict ..."
     with open("output.dict") as f:
         output_dict = json.load(f)
 
-    print "\nDumping words to dict ...\n"
+    print "Dumping words to dict ..."
 
     for term in search_words:
         if term in output_dict:
@@ -90,8 +94,8 @@ def query():
             doc_len += docs_table[doc][terms]["w"] * \
                 docs_table[doc][terms]["w"]
         docs_score[doc] = up_part / (math.sqrt(doc_len) * query_len)
-
-    print("doc#\tsimilarity score")
+    print "Top", return_count, "results:"
+    print "doc#\tsimilarity score"
     for i in sorted(docs_score, key=docs_score.get, reverse=True):
         return_count -= 1
         if return_count < 0:

@@ -8,14 +8,15 @@ from query.query import query
 from process.process import parsing
 from query.query import query_bs
 
+
 def create():
     tStart = time.time()
-    #time.sleep(2)
+    # time.sleep(2)
     input_file = sys.argv[1]
     print ("Start ......")
     print ("Parsing HTML ......")
-    print ("Dumping ......") 
-    index=preProcessing(input_file)
+    print ("Dumping ......")
+    index = preProcessing(input_file)
     dictList = parsing(index)
     indexing(dictList)
     print ("Finish !!!")
@@ -24,7 +25,7 @@ def create():
 
 
 if __name__ == "__main__":
-    doc_id=0
+    doc_id = 0
     if "-c" in sys.argv:
         create()
     elif "-s" in sys.argv:
@@ -38,7 +39,7 @@ if __name__ == "__main__":
             print ("Error: Can not dict file ! ")
             exit(1)
         else:
-            query_bs()        
+            query_bs()
     else:
         print ("Error: Please use -c or -s to run ! ")
         exit(1)
