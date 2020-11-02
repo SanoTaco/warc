@@ -6,7 +6,6 @@ from process.process import preProcessing
 from indexing.indexing import indexing
 from query.query import query
 from process.process import parsing
-from query.query import query_bs
 
 
 def create():
@@ -34,12 +33,6 @@ if __name__ == "__main__":
             exit(1)
         else:
             query()
-    elif "-bs" in sys.argv:
-        if not os.path.isfile("output.dict") or not os.path.isfile("page.total"):
-            print ("Error: Can not dict file ! ")
-            exit(1)
-        else:
-            query_bs()
     else:
         print ("Error: Please use -c or -s to run ! ")
         exit(1)
